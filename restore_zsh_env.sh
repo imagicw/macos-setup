@@ -75,7 +75,7 @@ multiselect() {
 
         if [[ "$key" == $'\x1b' ]]; then
             esc=''
-            IFS= read -rsn2 -t 0.1 esc || true
+            IFS= read -rsn2 -t 1 esc || true
             key="${key}${esc}"
         fi
 
