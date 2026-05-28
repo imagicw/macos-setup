@@ -123,12 +123,9 @@ ALL_ITEMS=(
     "---── CLI Tools (brew formulae)"
     "git"
     "gh"
-    "python@3.13"
     "uv"
     "deno"
-    "go"
     "gemini-cli"
-    "yarn"
     "pandoc"
     "ffmpeg"
     "yt-dlp"
@@ -148,7 +145,6 @@ ALL_ITEMS=(
     "---── Shell Environment"
     "oh-my-zsh + plugins + powerlevel10k"
     "nvm + Node.js 24"
-    "pnpm"
     "---── Config Files"
     "Write ~/.zshrc"
     "Write ~/.zprofile"
@@ -179,7 +175,7 @@ fi
 info "Installing ${#SELECTED[@]} selected components..."
 
 # ─── 3. Brew formulae ─────────────────────────────────────────────────────────
-FORMULAE=(git gh python@3.13 uv deno go gemini-cli yarn pandoc ffmpeg yt-dlp mackup)
+FORMULAE=(git gh uv deno gemini-cli pandoc ffmpeg yt-dlp mackup)
 TO_INSTALL=()
 for pkg in "${FORMULAE[@]}"; do
     contains "$pkg" "${SELECTED[@]}" && TO_INSTALL+=("$pkg") || true
@@ -291,19 +287,7 @@ if contains "nvm + Node.js 24" "${SELECTED[@]}"; then
     fi
 fi
 
-# ─── 7. pnpm ──────────────────────────────────────────────────────────────────
-if contains "pnpm" "${SELECTED[@]}"; then
-    section "pnpm"
-    if command -v pnpm &>/dev/null; then
-        info "pnpm already installed: $(pnpm --version)"
-    else
-        info "Installing pnpm via corepack..."
-        corepack enable
-        corepack prepare pnpm@latest --activate
-    fi
-fi
-
-# ─── 8. Write .zshrc ──────────────────────────────────────────────────────────
+# ─── 7. Write .zshrc ──────────────────────────────────────────────────────────
 if contains "Write ~/.zshrc" "${SELECTED[@]}"; then
     section ".zshrc"
     ZSHRC="$HOME/.zshrc"
@@ -338,13 +322,6 @@ source $ZSH/oh-my-zsh.sh
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
-# pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -359,7 +336,7 @@ ZSHRC_EOF
     info ".zshrc written"
 fi
 
-# ─── 9. Write .zprofile ───────────────────────────────────────────────────────
+# ─── 8. Write .zprofile ───────────────────────────────────────────────────────
 if contains "Write ~/.zprofile" "${SELECTED[@]}"; then
     section ".zprofile"
     ZPROFILE="$HOME/.zprofile"
@@ -380,7 +357,7 @@ ZPROFILE_EOF
     info ".zprofile written"
 fi
 
-# ─── 10. Git config ───────────────────────────────────────────────────────────
+# ─── 9. Git config ───────────────────────────────────────────────────────────
 if contains "Git config (imagicw)" "${SELECTED[@]}"; then
     section "Git config"
     GIT_NAME="imagicw"
