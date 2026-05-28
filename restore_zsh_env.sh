@@ -376,11 +376,11 @@ section "Mackup custom rules"
 MACKUP_DIR="$HOME/.mackup"
 mkdir -p "$MACKUP_DIR"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-if [ -f "$SCRIPT_DIR/mackup/input-source-pro.cfg" ]; then
-    cp "$SCRIPT_DIR/mackup/input-source-pro.cfg" "$MACKUP_DIR/input-source-pro.cfg"
-    info "Installed mackup rule: input-source-pro"
+if [ -d "$SCRIPT_DIR/.mackup" ]; then
+    cp "$SCRIPT_DIR"/.mackup/*.cfg "$MACKUP_DIR/"
+    info "Installed mackup custom rules from .mackup/"
 else
-    warn "mackup/input-source-pro.cfg not found next to script — skipping"
+    warn ".mackup/ directory not found next to script — skipping"
 fi
 
 # ─── Done ─────────────────────────────────────────────────────────────────────
