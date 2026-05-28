@@ -105,7 +105,10 @@ multiselect() {
 
     tput cnorm 2>/dev/null || true
     trap - INT TERM
-    printf "\n"
+
+    # Clear the selection UI (4 header lines + item lines)
+    tput cuu $(( total + 4 )) 2>/dev/null || true
+    tput ed 2>/dev/null || true
 
     _MS_RESULT=()
     for (( si=0; si<n; si++ )); do
