@@ -371,6 +371,18 @@ if contains "Git config (imagicw)" "${SELECTED[@]}"; then
     info "Git configured for $GIT_NAME <$GIT_EMAIL>"
 fi
 
+# ─── 10. Mackup custom app rules ─────────────────────────────────────────────
+section "Mackup custom rules"
+MACKUP_DIR="$HOME/.mackup"
+mkdir -p "$MACKUP_DIR"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if [ -f "$SCRIPT_DIR/mackup/input-source-pro.cfg" ]; then
+    cp "$SCRIPT_DIR/mackup/input-source-pro.cfg" "$MACKUP_DIR/input-source-pro.cfg"
+    info "Installed mackup rule: input-source-pro"
+else
+    warn "mackup/input-source-pro.cfg not found next to script — skipping"
+fi
+
 # ─── Done ─────────────────────────────────────────────────────────────────────
 section "Done"
 echo ""
@@ -391,4 +403,3 @@ echo "  4. Restart your terminal — p10k configuration wizard will launch autom
 echo ""
 warn "SSH keys: copy ~/.ssh/id_rsa* and other keys manually from your old machine."
 warn "Raycast: use Raycast's built-in Export / Import (Settings → Advanced → Export)."
-warn "JetBrains Toolbox and OrbStack require manual installation."
