@@ -82,7 +82,7 @@ fi
 # ─── 3. Diff brew casks ───────────────────────────────────────────────────────
 section "Brew casks diff"
 
-TRACKED_CASKS="$(parse_array CASKS)"
+TRACKED_CASKS="$(printf '%s\n%s' "$(parse_array CASKS)" "$(parse_array FONTS)")"
 INSTALLED_CASKS="$(brew list --cask)"
 
 NEW_CASKS=()

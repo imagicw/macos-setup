@@ -130,6 +130,8 @@ ALL_ITEMS=(
     "ffmpeg"
     "yt-dlp"
     "mackup"
+    "---── Fonts"
+    "font-maple-mono-nf"
     "---── GUI Apps (brew casks)"
     "raycast"
     "discord"
@@ -193,7 +195,27 @@ if [[ ${#TO_INSTALL[@]} -gt 0 ]]; then
     done
 fi
 
-# ─── 4. Brew casks ────────────────────────────────────────────────────────────
+# ─── 4. Fonts ─────────────────────────────────────────────────────────────────
+FONTS=(font-maple-mono-nf)
+TO_INSTALL=()
+for font in "${FONTS[@]}"; do
+    contains "$font" "${SELECTED[@]}" && TO_INSTALL+=("$font") || true
+done
+
+if [[ ${#TO_INSTALL[@]} -gt 0 ]]; then
+    section "Fonts"
+    brew tap homebrew/cask-fonts 2>/dev/null || true
+    for font in "${TO_INSTALL[@]}"; do
+        if brew list --cask "$font" &>/dev/null 2>&1; then
+            info "Already installed: $font"
+        else
+            info "Installing font: $font"
+            brew install --cask "$font" || warn "Failed to install font $font — skipping"
+        fi
+    done
+fi
+
+# ─── 5. Brew casks ────────────────────────────────────────────────────────────
 CASKS=(raycast discord handbrake imageoptim input-source-pro squirrel termius warp claude-code blackhole-2ch orbstack)
 TO_INSTALL=()
 for cask in "${CASKS[@]}"; do
@@ -371,10 +393,25 @@ if contains "Git config (imagicw)" "${SELECTED[@]}"; then
     info "Git configured for $GIT_NAME <$GIT_EMAIL>"
 fi
 
-# ─── 10. Mackup custom app rules ─────────────────────────────────────────────
-section "Mackup custom rules"
+# ─── 10. Mackup config + custom app rules ────────────────────────────────────
+section "Mackup config"
 MACKUP_DIR="$HOME/.mackup"
 mkdir -p "$MACKUP_DIR"
+
+MACKUP_CFG="$HOME/.mackup.cfg"
+if [ ! -f "$MACKUP_CFG" ]; then
+    cat > "$MACKUP_CFG" << 'MACKUP_EOF'
+[storage]
+engine = icloud
+
+[applications_to_ignore]
+capture-one
+MACKUP_EOF
+    info "Written ~/.mackup.cfg (engine = icloud)"
+else
+    info "~/.mackup.cfg already exists — skipping"
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 if [ -d "$SCRIPT_DIR/.mackup" ]; then
     cp "$SCRIPT_DIR"/.mackup/*.cfg "$MACKUP_DIR/"
@@ -399,7 +436,7 @@ echo "  3. Run mackup restore:"
 echo ""
 echo "       mackup restore"
 echo ""
-echo "  4. Restart your terminal — p10k configuration wizard will launch automatically."
+echo "  4. Restart your terminal — p10k will load your restored ~/.p10k.zsh config."
 echo ""
 warn "SSH keys: copy ~/.ssh/id_rsa* and other keys manually from your old machine."
 warn "Raycast: use Raycast's built-in Export / Import (Settings → Advanced → Export)."
