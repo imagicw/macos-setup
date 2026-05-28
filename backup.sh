@@ -50,16 +50,17 @@ fi
 section "Brew formulae diff"
 
 TRACKED_FORMULAE="$(parse_array FORMULAE)"
-INSTALLED_FORMULAE="$(brew leaves)"
+LEAF_FORMULAE="$(brew leaves)"          # top-level, for detecting new untracked installs
+ALL_FORMULAE="$(brew list --formula)"   # all installed, for checking tracked packages exist
 
 NEW_FORMULAE=()
 while IFS= read -r pkg; do
     echo "$TRACKED_FORMULAE" | in_list "$pkg" || NEW_FORMULAE+=("$pkg")
-done <<< "$INSTALLED_FORMULAE"
+done <<< "$LEAF_FORMULAE"
 
 MISSING_FORMULAE=()
 while IFS= read -r pkg; do
-    echo "$INSTALLED_FORMULAE" | in_list "$pkg" || MISSING_FORMULAE+=("$pkg")
+    echo "$ALL_FORMULAE" | in_list "$pkg" || MISSING_FORMULAE+=("$pkg")
 done <<< "$TRACKED_FORMULAE"
 
 if [[ ${#NEW_FORMULAE[@]} -gt 0 ]]; then
