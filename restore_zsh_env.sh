@@ -130,6 +130,7 @@ ALL_ITEMS=(
     "ffmpeg"
     "yt-dlp"
     "mackup"
+    "claude-code"
     "---── Fonts"
     "font-maple-mono-nf"
     "---── GUI Apps (brew casks)"
@@ -141,7 +142,6 @@ ALL_ITEMS=(
     "squirrel"
     "termius"
     "warp"
-    "claude-code"
     "blackhole-2ch"
     "orbstack"
     "---── Shell Environment"
@@ -177,7 +177,7 @@ fi
 info "Installing ${#SELECTED[@]} selected components..."
 
 # ─── 3. Brew formulae ─────────────────────────────────────────────────────────
-FORMULAE=(git gh uv deno gemini-cli pandoc ffmpeg yt-dlp mackup)
+FORMULAE=(git gh uv deno gemini-cli pandoc ffmpeg yt-dlp mackup claude-code)
 TO_INSTALL=()
 for pkg in "${FORMULAE[@]}"; do
     contains "$pkg" "${SELECTED[@]}" && TO_INSTALL+=("$pkg") || true
@@ -216,7 +216,7 @@ if [[ ${#TO_INSTALL[@]} -gt 0 ]]; then
 fi
 
 # ─── 5. Brew casks ────────────────────────────────────────────────────────────
-CASKS=(raycast discord handbrake imageoptim input-source-pro squirrel termius warp claude-code blackhole-2ch orbstack)
+CASKS=(raycast discord handbrake imageoptim input-source-pro squirrel termius warp blackhole-2ch orbstack)
 TO_INSTALL=()
 for cask in "${CASKS[@]}"; do
     contains "$cask" "${SELECTED[@]}" && TO_INSTALL+=("$cask") || true
