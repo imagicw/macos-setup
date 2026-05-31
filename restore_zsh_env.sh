@@ -144,6 +144,7 @@ ALL_ITEMS=(
     "warp"
     "blackhole-2ch"
     "orbstack"
+    "obsidian"
     "---── Shell Environment"
     "oh-my-zsh + plugins + powerlevel10k"
     "nvm + Node.js 24"
@@ -216,7 +217,7 @@ if [[ ${#TO_INSTALL[@]} -gt 0 ]]; then
 fi
 
 # ─── 5. Brew casks ────────────────────────────────────────────────────────────
-CASKS=(raycast discord handbrake imageoptim input-source-pro squirrel termius warp blackhole-2ch orbstack)
+CASKS=(raycast discord handbrake imageoptim input-source-pro squirrel termius warp blackhole-2ch orbstack obsidian)
 TO_INSTALL=()
 for cask in "${CASKS[@]}"; do
     contains "$cask" "${SELECTED[@]}" && TO_INSTALL+=("$cask") || true
