@@ -145,6 +145,7 @@ ALL_ITEMS=(
     "blackhole-2ch"
     "orbstack"
     "obsidian"
+    "keka"
     "---── Shell Environment"
     "oh-my-zsh + plugins + powerlevel10k"
     "nvm + Node.js 24"
@@ -217,7 +218,7 @@ if [[ ${#TO_INSTALL[@]} -gt 0 ]]; then
 fi
 
 # ─── 5. Brew casks ────────────────────────────────────────────────────────────
-CASKS=(raycast discord handbrake imageoptim input-source-pro squirrel termius warp blackhole-2ch orbstack obsidian)
+CASKS=(raycast discord handbrake imageoptim input-source-pro squirrel termius warp blackhole-2ch orbstack obsidian keka)
 TO_INSTALL=()
 for cask in "${CASKS[@]}"; do
     contains "$cask" "${SELECTED[@]}" && TO_INSTALL+=("$cask") || true
@@ -236,7 +237,7 @@ if [[ ${#TO_INSTALL[@]} -gt 0 ]]; then
 
 fi
 
-# ─── 5. oh-my-zsh + plugins + powerlevel10k ───────────────────────────────────
+# ─── 6. oh-my-zsh + plugins + powerlevel10k ───────────────────────────────────
 if contains "oh-my-zsh + plugins + powerlevel10k" "${SELECTED[@]}"; then
     section "oh-my-zsh"
     if [ -d "$HOME/.oh-my-zsh" ]; then
@@ -282,7 +283,7 @@ if contains "oh-my-zsh + plugins + powerlevel10k" "${SELECTED[@]}"; then
     fi
 fi
 
-# ─── 6. nvm + Node.js ─────────────────────────────────────────────────────────
+# ─── 7. nvm + Node.js ─────────────────────────────────────────────────────────
 if contains "nvm + Node.js 24" "${SELECTED[@]}"; then
     section "nvm + Node.js"
     NVM_VERSION="0.40.1"
