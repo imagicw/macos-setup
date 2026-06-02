@@ -164,6 +164,10 @@ ALL_ITEMS=(
     "Git config (imagicw)"
     "---── App Store"
     "WeChat"
+    "Things 3"
+    "Spark"
+    "Bitwarden"
+    "CotEditor"
 )
 
 # ─── 1. Homebrew (prerequisite, always installed) ─────────────────────────────
@@ -436,6 +440,10 @@ fi
 # ─── 11. App Store apps (mas) ────────────────────────────────────────────────
 declare -A MAS_APPS=(
     ["WeChat"]=836500024
+    ["Things 3"]=904280696
+    ["Spark"]=1176895641
+    ["Bitwarden"]=1352778147
+    ["CotEditor"]=1024640650
 )
 
 MAS_TO_INSTALL=()
