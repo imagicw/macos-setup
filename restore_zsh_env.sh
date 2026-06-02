@@ -131,6 +131,15 @@ ALL_ITEMS=(
     "yt-dlp"
     "mackup"
     "claude-code"
+    "jq"
+    "fzf"
+    "ripgrep"
+    "bat"
+    "eza"
+    "tree"
+    "tldr"
+    "tmux"
+    "mas"
     "---── Fonts"
     "font-maple-mono-nf"
     "---── GUI Apps (brew casks)"
@@ -153,6 +162,8 @@ ALL_ITEMS=(
     "Write ~/.zshrc"
     "Write ~/.zprofile"
     "Git config (imagicw)"
+    "---── App Store"
+    "WeChat"
 )
 
 # ─── 1. Homebrew (prerequisite, always installed) ─────────────────────────────
@@ -179,7 +190,7 @@ fi
 info "Installing ${#SELECTED[@]} selected components..."
 
 # ─── 3. Brew formulae ─────────────────────────────────────────────────────────
-FORMULAE=(git gh uv deno gemini-cli pandoc ffmpeg yt-dlp mackup claude-code)
+FORMULAE=(git gh uv deno gemini-cli pandoc ffmpeg yt-dlp mackup claude-code jq fzf ripgrep bat eza tree tldr tmux mas)
 TO_INSTALL=()
 for pkg in "${FORMULAE[@]}"; do
     contains "$pkg" "${SELECTED[@]}" && TO_INSTALL+=("$pkg") || true
@@ -420,6 +431,37 @@ if [ -d "$SCRIPT_DIR/.mackup" ]; then
     info "Installed mackup custom rules from .mackup/"
 else
     warn ".mackup/ directory not found next to script — skipping"
+fi
+
+# ─── 11. App Store apps (mas) ────────────────────────────────────────────────
+declare -A MAS_APPS=(
+    ["WeChat"]=836500024
+)
+
+MAS_TO_INSTALL=()
+for app in "${!MAS_APPS[@]}"; do
+    contains "$app" "${SELECTED[@]}" && MAS_TO_INSTALL+=("$app") || true
+done
+
+if [[ ${#MAS_TO_INSTALL[@]} -gt 0 ]]; then
+    section "App Store apps"
+    if ! command -v mas &>/dev/null; then
+        warn "mas not found — skipping App Store installs"
+    else
+        if ! mas account &>/dev/null 2>&1; then
+            warn "Not signed in to App Store — skipping App Store installs"
+        else
+            for app in "${MAS_TO_INSTALL[@]}"; do
+                mas_id="${MAS_APPS[$app]}"
+                if mas list | grep -q "^${mas_id}"; then
+                    info "Already installed: $app"
+                else
+                    info "Installing from App Store: $app"
+                    mas install "$mas_id" || warn "Failed to install $app — skipping"
+                fi
+            done
+        fi
+    fi
 fi
 
 # ─── Done ─────────────────────────────────────────────────────────────────────
